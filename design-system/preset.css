@@ -1,0 +1,72 @@
+/* ==========================================================================
+   PRESET CARROSSEL VEGA — v1
+   Travado no slide 1 (05/ago/2026). Não editar sem revalidar todos os slides.
+   Canvas 1080x1350 (4:5). Fundo gerado em 3:4 e cortado pelo topo.
+   ========================================================================== */
+
+@font-face{
+  font-family:'Jost';
+  src:url(data:font/woff2;base64,__FONT__) format('woff2');
+  font-weight:100 900;
+  font-style:normal;
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1080px;height:1350px;overflow:hidden;background:#050505}
+
+.canvas{
+  position:relative;width:1080px;height:1350px;
+  background:url('__BG__') center/cover no-repeat;
+}
+
+/* Campo escuro desenhado por CSS (slides 2+). No slide 1 ele já vem na imagem,
+   então --field fica em 50.5% só para a máscara do grid bater. */
+:root{--field:50.5%}
+
+.field{
+  position:absolute;left:0;right:0;top:0;
+  height:var(--field);
+  background:#050505;
+}
+.field.suave{                       /* borda em degradê curto */
+  height:calc(var(--field) + 6%);
+  background:linear-gradient(to bottom,#050505 0%,#050505 calc(100% - 6%),rgba(5,5,5,0) 100%);
+}
+
+/* Textura do campo escuro. Some antes da borda, sempre relativa a --field. */
+.grid{
+  position:absolute;inset:0;
+  background-image:radial-gradient(circle at center,rgba(242,234,217,.10) 1.2px,transparent 1.3px);
+  background-size:26px 26px;
+  -webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 calc(var(--field) - 12%),transparent var(--field));
+  mask-image:linear-gradient(to bottom,#000 0%,#000 calc(var(--field) - 12%),transparent var(--field));
+}
+
+/* Manual: respiro de 1x a altura do V. Em 150px de largura isso já está embutido. */
+.logo{position:absolute;top:70px;left:74px;width:150px;line-height:0}
+.logo svg{width:100%;height:auto;display:block}
+
+.txt{
+  position:absolute;left:0;right:0;top:170px;
+  padding:0 30px;
+  text-align:center;
+  font-family:'Jost';
+  color:#F2EAD9;
+  line-height:1.05;
+  /* Glow curto. Raio largo espalha e engrossa a letra opticamente. */
+  text-shadow:0 0 18px rgba(242,234,217,.30),0 0 55px rgba(242,234,217,.14);
+}
+
+/* Tracking VAI nas linhas, nunca no .txt: `em` resolve contra o font-size do
+   próprio elemento, e .txt não tem corpo declarado. */
+.l1,.l2{letter-spacing:-.025em;word-spacing:-.10em}
+
+.l1{display:block;font-weight:200;font-size:72px}
+/* nowrap é proposital: se não couber, vaza e aparece — em vez de quebrar calado */
+.l2{display:block;font-weight:200;font-size:104px;white-space:nowrap}
+
+/* Ênfase = peso 500 + brilho curto. Nunca acima de 500: engorda e vaza a margem. */
+.l2 .hard{
+  font-weight:500;color:#F6EFDE;
+  text-shadow:0 0 10px rgba(242,234,217,.45),0 0 30px rgba(242,234,217,.20);
+}
