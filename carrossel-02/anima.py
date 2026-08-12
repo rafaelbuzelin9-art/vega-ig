@@ -73,20 +73,32 @@ body{{background:url('{cenario.name}') no-repeat;font-family:'Jost'}}
 .flash{{position:absolute;top:-20%;bottom:-20%;width:52%;pointer-events:none;
   left:-60%;opacity:0;transform:skewX(-18deg);
   background:linear-gradient(90deg,transparent,rgba(242,234,217,.30),transparent)}}
-/* CURSOR */
+/* CURSOR: disco de vidro em vez da seta de sistema. A seta era um corpo
+   estranho no meio de um painel de vidro; o disco usa a mesma linguagem e
+   ainda deixa ver o cartao por baixo. */
 #cursor{{position:absolute;left:0;top:0;width:46px;height:46px;
-  transform-origin:6px 4px;filter:drop-shadow(0 6px 14px rgba(0,0,0,.85));
-  z-index:9}}
+  margin:-23px 0 0 -23px;border-radius:50%;z-index:9;
+  border:1.5px solid rgba(242,234,217,.75);
+  background:radial-gradient(circle at 35% 30%,rgba(242,234,217,.30),
+             rgba(242,234,217,.06) 60%,transparent 72%);
+  backdrop-filter:blur(3px) brightness(1.25);
+  box-shadow:0 8px 22px rgba(0,0,0,.75),inset 0 1px 0 rgba(255,255,255,.5)}}
+#cursor::after{{content:"";position:absolute;left:50%;top:50%;width:5px;height:5px;
+  margin:-2.5px 0 0 -2.5px;border-radius:50%;background:#F2EAD9}}
+/* rastro: o mesmo disco atrasado alguns quadros, e o que da a leitura de
+   movimento continuo num video de 30 quadros */
+#rastro{{position:absolute;left:0;top:0;width:46px;height:46px;
+  margin:-23px 0 0 -23px;border-radius:50%;z-index:8;
+  border:1.5px solid rgba(242,234,217,.20)}}
+.valor{{display:inline-block;transform-origin:0% 60%}}
 </style></head><body class="vega-liquid">
 <div class="painel"><div class="escala">{cartoes}</div></div>
-<svg id="cursor" viewBox="0 0 24 24">
-  <path d="M5 2 L5 20.5 L9.6 16.2 L12.4 22.4 L15.4 21 L12.6 15 L19 14.6 Z"
-        fill="#F2EAD9" stroke="#141010" stroke-width="1.2" stroke-linejoin="round"/>
-</svg>
+<div id="rastro"></div><div id="cursor"></div>
 <script>
 const CLIQUES = {json.dumps(C["cliques"])};      // instante de cada clique, em s
 const cartoes = [...document.querySelectorAll('.cartao')];
 const cursor  = document.getElementById('cursor');
+const rastro  = document.getElementById('rastro');
 const CH = {json.dumps(C.get("chegada", .45))};   // quanto antes o cursor chega
 
 const cl  = (x,a,b) => x < a ? a : x > b ? b : x;
@@ -94,6 +106,13 @@ const t01 = (x) => cl(x, 0, 1);
 const outCubic = x => 1 - Math.pow(1 - t01(x), 3);
 const inOutCubic = x => (x = t01(x)) < .5 ? 4*x*x*x : 1 - Math.pow(-2*x + 2, 3)/2;
 const outExpo = x => (x = t01(x)) === 1 ? 1 : 1 - Math.pow(2, -9*x);
+const inOutQuint = x => (x = t01(x)) < .5 ? 16*x*x*x*x*x : 1 - Math.pow(-2*x + 2, 5)/2;
+function bezier(x0, y0, x1, y1, k){{
+  const cx = (x0 + x1)/2 + Math.abs(y1 - y0) * .34 + 40;   // barriga do arco
+  const cy = (y0 + y1)/2;
+  const u = 1 - k;
+  return [u*u*x0 + 2*u*k*cx + k*k*x1, u*u*y0 + 2*u*k*cy + k*k*y1];
+}}
 // mola de verdade: amplitude que decai enquanto oscila. E o overshoot que faz
 // a caixa parecer ter massa em vez de so aparecer
 const mola = (x, f = 3.1, d = 5.4) =>
@@ -134,20 +153,27 @@ function frame(t){{
     // o total tem curso maior: 38 subindo no mesmo tempo de 1 vira piscada
     const cur = (i === cartoes.length - 1) ? 1.05 : .62;
     v.textContent = Math.round(+v.dataset.alvo * outExpo((dt - .04) / cur));
+    // e o numero so ganha corpo DEPOIS de fechar a contagem: escalar durante
+    // a subida embaralha as duas leituras
+    const dp2 = dt - (cur + .04);
+    const pop = dp2 > 0 && dp2 < .42 ? Math.sin(Math.PI * (dp2 / .42)) : 0;
+    v.style.transform = 'scale(' + (1 + .16 * pop).toFixed(4) + ')';
   }});
 
   // CURSOR: sai de fora do quadro, encosta em cada cartao um pouco antes do
   // clique e afunda no toque
-  let px = -70, py = 1460, pt = -1;
+  let px = 540, py = -90, pt = -1;      // entra por cima, no eixo do quadro
   let alvo = 0;
   for (let i = 0; i < CLIQUES.length; i++) {{
     if (t >= CLIQUES[i] - CH) alvo = i;
   }}
   const [ax, ay] = alvoDoCartao(alvo);
   if (alvo > 0) {{ [px, py] = alvoDoCartao(alvo - 1); pt = CLIQUES[alvo - 1]; }}
-  const ini = alvo === 0 ? CLIQUES[0] - CH - .35 : pt + .12;
-  const k = inOutCubic((t - ini) / (CLIQUES[alvo] - CH - ini + .0001));
-  const x = px + (ax - px) * k, y = py + (ay - py) * k;
+  const ini = alvo === 0 ? CLIQUES[0] - CH - .55 : pt + .10;
+  const k = inOutQuint((t - ini) / (CLIQUES[alvo] - CH - ini + .0001));
+  // trajetoria em ARCO: linha reta entre dois cartoes empilhados le como
+  // teleporte vertical. O ponto de controle joga a curva para a direita.
+  const [x, y] = bezier(px, py, ax, ay, k);
 
   const dtc = t - CLIQUES[alvo];
   const press = dtc > -.09 && dtc < .16
@@ -163,6 +189,14 @@ function frame(t){{
   cursor.style.opacity = op.toFixed(3);
   cursor.style.transform =
     'translate(' + sx.toFixed(1) + 'px,' + sy.toFixed(1) + 'px) scale(' + press.toFixed(3) + ')';
+  if (window.__ant === undefined) window.__ant = [sx, sy];
+  // o rastro persegue a posicao atual com atraso fixo; em quadro a quadro isso
+  // equivale a um seguidor amortecido e custa nada
+  window.__ant = [window.__ant[0] + (sx - window.__ant[0]) * .34,
+                  window.__ant[1] + (sy - window.__ant[1]) * .34];
+  rastro.style.opacity = (op * .55).toFixed(3);
+  rastro.style.transform = 'translate(' + window.__ant[0].toFixed(1) + 'px,'
+    + window.__ant[1].toFixed(1) + 'px) scale(' + (press * 1.22).toFixed(3) + ')';
 
   // e o total respira uma vez, para o olho terminar nele
   const ult = cartoes[cartoes.length - 1].querySelector('[data-slot=card]');
