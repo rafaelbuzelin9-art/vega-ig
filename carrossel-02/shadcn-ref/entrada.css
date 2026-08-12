@@ -1,0 +1,131 @@
+/* sem preflight: o slide já tem o reset do preset.css. E as utilities entram
+   com `important` porque o `*{padding:0}` do preset, por vir depois e ter a
+   mesma especificidade, estava zerando px-6/py-6 e achatando os cards. */
+@layer theme, base, components, utilities;
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities) important;
+@custom-variant dark (&:is(.dark *));
+
+/* tokens copiados de ui.shadcn.com/r/colors/neutral.json (tema neutral) */
+:root{
+  --radius: 0.625rem;
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+}
+.dark{
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+}
+
+@theme inline{
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  /* no shadcn v4 os raios sao derivados de --radius: xl = radius + 4px = 14px */
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+@layer base{
+  *{ border-color: var(--color-border); }
+  body{ background: var(--color-background); color: var(--color-foreground); }
+}
+
+/* Paleta da Vega entrando pelos MESMOS tokens do shadcn: a geometria do card
+   (raio, padding, gaps, sombra, pesos) fica intacta, só a cor muda. */
+body.vega{
+  --card: #F7F1E3;
+  --card-foreground: #14100B;
+  --primary: #14100B;
+  --muted-foreground: #6E6253;
+  --border: rgba(28,23,18,.14);
+  background: #050505;
+}
+
+/* variante A: card claro da Vega, com um halo atras para o objeto pousar no
+   preto. Sombra preta nao existe em fundo preto; luz, sim. */
+body.vega-halo{ --card:#F7F1E3; --card-foreground:#14100B; --primary:#14100B;
+  --muted-foreground:#6E6253; --border:rgba(28,23,18,.14); }
+body.vega-halo [data-slot=card]{
+  box-shadow:0 0 0 1px rgba(0,0,0,.6),0 26px 50px -18px rgba(0,0,0,.95),
+             0 0 60px -10px rgba(247,240,225,.14) !important}
+
+/* variante B: o DARK MODE do shadcn com os tokens deles, so trocando o
+   background pelo nosso Preto Cine */
+body.vega-dark{ --card:oklch(0.205 0 0); --card-foreground:oklch(0.985 0 0);
+  --primary:oklch(0.922 0 0); --muted-foreground:oklch(0.708 0 0);
+  --border:oklch(1 0 0 / 10%); }
+
+@layer utilities {
+/* --- LIQUID GLASS -------------------------------------------------------
+   Mantem a geometria do card do shadcn (raio, padding, gaps, tipografia) e
+   troca a superficie. A luz colorida mora DENTRO do cartao: quando ela ficava
+   no documento, atras dos cartoes, vazava pelos vaos e denunciava o retangulo
+   colado no slide. */
+body.vega-liquid{
+  --card: transparent;
+  --card-foreground: #F2EAD9;      /* Creme */
+  --primary: #F2EAD9;
+  --muted-foreground: rgba(231,220,198,.78);   /* Areia */
+  --border: rgba(231,220,198,.26);
+}
+body.vega-liquid [data-slot=card]{
+  position:relative;overflow:hidden;isolation:isolate;
+  border-radius:28px !important;
+  background-image:
+    radial-gradient(120% 90% at 8% 0%,rgba(29,67,184,.62),transparent 58%),
+    radial-gradient(110% 90% at 100% 110%,rgba(231,220,198,.26),transparent 60%),
+    linear-gradient(180deg,rgba(242,234,217,.17),rgba(242,234,217,.05) 55%,
+                    rgba(242,234,217,.11)) !important;
+  backdrop-filter:blur(22px) saturate(170%) brightness(1.10);
+  -webkit-backdrop-filter:blur(22px) saturate(170%) brightness(1.10);
+  box-shadow:
+    inset 0 1.5px 0 rgba(242,234,217,.60),
+    inset 0 -1.5px 0 rgba(0,0,0,.45),
+    inset 0 0 40px rgba(242,234,217,.06),
+    0 30px 60px -22px rgba(0,0,0,.95) !important;
+}
+/* reflexo especular diagonal: a faixa que corre do canto superior esquerdo */
+body.vega-liquid [data-slot=card]::before{
+  content:"";position:absolute;inset:0;pointer-events:none;z-index:-1;
+  background:linear-gradient(122deg,rgba(242,234,217,.22) 0%,
+             rgba(242,234,217,.06) 24%,transparent 44%);
+}
+/* segundo reflexo, curto, na quina de baixo: e ele que da espessura ao vidro */
+body.vega-liquid [data-slot=card]::after{
+  content:"";position:absolute;right:-8%;bottom:-55%;width:56%;height:110%;
+  border-radius:50%;pointer-events:none;z-index:-1;
+  background:radial-gradient(circle,rgba(231,220,198,.14),transparent 60%);
+}
+}

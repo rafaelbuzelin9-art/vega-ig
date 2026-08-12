@@ -1,0 +1,21 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><link rel="stylesheet" href="saida.css">
+<style>@font-face{font-family:Geist;font-weight:100 900;src:url("node_modules/geist/dist/fonts/geist-sans/Geist-Variable.woff2") format("woff2")}
+html{font-family:Geist,ui-sans-serif,sans-serif}body{margin:0;padding:40px;width:1000px}</style></head><body>
+<div class="grid grid-cols-1 gap-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card *:data-[slot=card]:shadow-xs">
+ <div id="c" data-slot="card" class="@container/card flex flex-col gap-6 rounded-xl border bg-card py-6 text-card-foreground shadow-sm">
+  <div id="h" class="@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start gap-2 px-6 has-data-[slot=card-action]:grid-cols-[1fr_auto]">
+   <div id="d" class="text-sm text-muted-foreground">Total Revenue</div>
+   <div id="t" class="leading-none font-semibold text-2xl tabular-nums @[250px]/card:text-3xl">$1,250.00</div>
+  </div>
+ </div></div>
+<pre id="out"></pre>
+<script>
+const g=(id,ps)=>{const s=getComputedStyle(document.getElementById(id));
+ return id+": "+ps.map(p=>p+"="+s[p]).join(" | ")};
+document.getElementById('out').textContent=[
+ g('c',['borderRadius','borderWidth','borderColor','paddingTop','paddingBottom','backgroundColor','backgroundImage','boxShadow','rowGap']),
+ g('h',['paddingLeft','paddingRight','rowGap']),
+ g('d',['fontSize','fontWeight','color','lineHeight']),
+ g('t',['fontSize','fontWeight','color','lineHeight','letterSpacing','fontVariantNumeric'])
+].join("\n");
+</script></body></html>

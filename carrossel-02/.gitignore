@@ -1,0 +1,9 @@
+# temporarios do render (o Chrome escreve aqui a cada rodada)
+_*.png
+_*.html
+_*.json
+_*.txt
+__pycache__/
+shadcn-ref/node_modules/
+shadcn-ref/package-lock.json
+SLIDE-vt*.png

@@ -1,0 +1,33 @@
+<!DOCTYPE html><html><head><meta charset="utf-8">
+<!-- Painel do slide 02 no formato VERTICAL: coluna única de cards.
+     As classes são as mesmas de registry/new-york-v4/ui/card.tsx; o que muda
+     são os tokens de cor, sobrescritos com a paleta da Vega. -->
+<link rel="stylesheet" href="saida.css">
+</head><body class="vega">
+<div class="flex flex-col gap-4 w-[420px]">
+  <div data-slot="card" class="@container/card flex flex-col gap-6 rounded-xl border bg-card py-6 text-card-foreground shadow-xs bg-gradient-to-t from-primary/5 to-card">
+    <div data-slot="card-header" class="grid auto-rows-min grid-rows-[auto_auto] items-start gap-2 px-6">
+      <div data-slot="card-description" class="text-sm text-muted-foreground">Confirmação</div>
+      <div data-slot="card-title" class="leading-none font-semibold text-2xl tabular-nums @[250px]/card:text-3xl">1 min</div>
+    </div>
+  </div>
+  <div data-slot="card" class="@container/card flex flex-col gap-6 rounded-xl border bg-card py-6 text-card-foreground shadow-xs bg-gradient-to-t from-primary/5 to-card">
+    <div data-slot="card-header" class="grid auto-rows-min grid-rows-[auto_auto] items-start gap-2 px-6">
+      <div data-slot="card-description" class="text-sm text-muted-foreground">Retomada</div>
+      <div data-slot="card-title" class="leading-none font-semibold text-2xl tabular-nums @[250px]/card:text-3xl">2 min</div>
+    </div>
+  </div>
+  <div data-slot="card" class="@container/card flex flex-col gap-6 rounded-xl border bg-card py-6 text-card-foreground shadow-xs bg-gradient-to-t from-primary/5 to-card">
+    <div data-slot="card-header" class="grid auto-rows-min grid-rows-[auto_auto] items-start gap-2 px-6">
+      <div data-slot="card-description" class="text-sm text-muted-foreground">Horário vago</div>
+      <div data-slot="card-title" class="leading-none font-semibold text-2xl tabular-nums @[250px]/card:text-3xl">5 min</div>
+    </div>
+  </div>
+  <div data-slot="card" class="@container/card flex flex-col gap-6 rounded-xl border bg-card py-6 text-card-foreground shadow-xs bg-gradient-to-t from-primary/5 to-card">
+    <div data-slot="card-header" class="grid auto-rows-min grid-rows-[auto_auto] items-start gap-2 px-6">
+      <div data-slot="card-description" class="text-sm text-muted-foreground">No mês</div>
+      <div data-slot="card-title" class="leading-none font-semibold text-2xl tabular-nums @[250px]/card:text-3xl">38 h</div>
+    </div>
+  </div>
+</div>
+</body></html>
