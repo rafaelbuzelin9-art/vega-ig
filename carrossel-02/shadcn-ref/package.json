@@ -15,6 +15,7 @@
     "tailwindcss": "^4.3.3"
   },
   "dependencies": {
-    "geist": "^1.7.2"
+    "geist": "^1.7.2",
+    "puppeteer-core": "^24.43.1"
   }
 }

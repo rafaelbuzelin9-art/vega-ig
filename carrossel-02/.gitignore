@@ -7,3 +7,5 @@ __pycache__/
 shadcn-ref/node_modules/
 shadcn-ref/package-lock.json
 SLIDE-vt*.png
+_frames/
+_chk/
