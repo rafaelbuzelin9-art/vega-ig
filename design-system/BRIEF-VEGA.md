@@ -68,7 +68,7 @@ Nunca `#000000` nem `#FFFFFF`. Azul só como aura/detalhe, jamais tinta de texto
 
 - Canvas 1080×1350. Campo (preto ou creme) no topo até **~50,5%** da altura,
   com **borda inferior reta e dura** — é a linha do sistema.
-- Grid de pontos no campo: raio ~1.2px, malha 26px, cor do texto a 10% de opacidade,
+- Grid de pontos no campo: raio ~1.2px, malha 38,5px, cor do texto a 25% de opacidade,
   esvaindo antes da linha.
 - Logo no topo-esquerdo, 150px de largura, margens 70px/74px
   (assets/logo-vega.svg no escuro, logo-vega-tinta.svg no claro).

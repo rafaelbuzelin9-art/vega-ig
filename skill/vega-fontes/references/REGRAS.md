@@ -18,7 +18,7 @@ Antes: salve o fundo gerado em `fundos/slideN-raw.png` e adicione a entrada em `
 | Canvas | 1080×1350 (4:5) |
 | Fundo | gerado em 3:4, cortado pelo topo |
 | Preto | `#050505` — preto puro é levantado no render |
-| Grid | pontos 26px, creme a 10%, some entre 38% e 49% da altura |
+| Grid | pontos 38,5px, creme a 25%, ponto 1,2px, de borda a borda (v2, 13/ago/2026) |
 | Logo | `logo-vega.svg`, 150px, topo 70 / esq 74 |
 | Texto | centralizado, topo 170, entrelinha 105% |
 | Linha 1 | Jost 200, 72px, `#F2EAD9` |
@@ -27,6 +27,23 @@ Antes: salve o fundo gerado em `fundos/slideN-raw.png` e adicione a entrada em `
 | Tracking | letra −2,5% · palavra −10% |
 | Glow geral | `0 0 18px .30` + `0 0 55px .14` |
 | Glow da ênfase | `0 0 10px .45` + `0 0 30px .20` |
+
+## Campo de pontos — v2 (13/ago/2026)
+
+O fundo-base novo (`VEGA-fundo-base.png`, 1080×1350) virou o padrão do campo
+escuro. Medido do arquivo e reproduzido em CSS, não em imagem — assim escala
+para qualquer formato sem borrar o ponto:
+
+```css
+background-image:radial-gradient(circle at center,rgba(242,234,217,.25) 1.2px,transparent 1.3px);
+background-size:38.5px 38.5px;   /* 28 colunas em 1080, primeiro centro em x=19 */
+```
+
+Piso `#050505`, pontos de borda a borda (o v1 esvaía 12% antes da linha; a
+classe `.grid.esvai-v1` guarda esse comportamento para refazer peça antiga).
+Conferência numérica contra o arquivo: piso 5, pico (61,59,55) contra
+(60,58,55) do alvo. Logo do fundo-base = `logo-vega.svg` 150px, topo 70 / esq
+74 — igual ao preset, não mudou.
 
 ## Cinco coisas aprendidas — não repetir
 

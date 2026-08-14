@@ -33,11 +33,17 @@ html,body{width:1080px;height:1350px;overflow:hidden;background:#050505}
   background:linear-gradient(to bottom,#050505 0%,#050505 calc(100% - 6%),rgba(5,5,5,0) 100%);
 }
 
-/* Textura do campo escuro. Some antes da borda, sempre relativa a --field. */
+/* Textura do campo escuro. Padrão v2 (13/ago/2026), medido de VEGA-fundo-base.png:
+   malha 38,5px, creme a 25%, ponto de 1,2px, de borda a borda — sem esvaimento.
+   Substitui o v1 (26px, 10%, máscara morrendo 12% antes da linha). Reprodução
+   conferida contra o arquivo: piso 5, pico (61,59,55) vs (60,58,55) do alvo. */
 .grid{
   position:absolute;inset:0;
-  background-image:radial-gradient(circle at center,rgba(242,234,217,.10) 1.2px,transparent 1.3px);
-  background-size:26px 26px;
+  background-image:radial-gradient(circle at center,rgba(242,234,217,.25) 1.2px,transparent 1.3px);
+  background-size:38.5px 38.5px;
+}
+/* Esvaimento do v1, caso alguma peça antiga precise ser refeita igual. */
+.grid.esvai-v1{
   -webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 calc(var(--field) - 12%),transparent var(--field));
   mask-image:linear-gradient(to bottom,#000 0%,#000 calc(var(--field) - 12%),transparent var(--field));
 }
