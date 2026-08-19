@@ -6,6 +6,12 @@ _*.txt
 __pycache__/
 shadcn-ref/node_modules/
 shadcn-ref/package-lock.json
-SLIDE-vt*.png
+# render e prova nao entram no repo: o que vale e o motor (os .py) e a
+# entrega (finais/). Cada rodada de estudo gerava um PNG novo aqui dentro,
+# e a pasta virou um album de versoes mortas.
+SLIDE-*.png
+PRANCHA-*.png
+BOARD-*.png
+QA-*.png
 _frames/
 _chk/
