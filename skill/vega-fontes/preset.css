@@ -49,7 +49,7 @@ html,body{width:1080px;height:1350px;overflow:hidden;background:#050505}
 }
 
 /* Manual: respiro de 1x a altura do V. Em 150px de largura isso já está embutido. */
-.logo{position:absolute;top:70px;left:74px;width:150px;line-height:0}
+.logo{position:absolute;top:72px;left:65px;width:196px;line-height:0}
 .logo svg{width:100%;height:auto;display:block}
 
 .txt{

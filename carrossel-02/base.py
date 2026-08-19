@@ -26,11 +26,7 @@ NIVEIS = [("20g", .20, 1.45)]      # nível travado: 30/255 de contraste real
 
 FONTE = base64.b64encode(
     (DS / "assets" / "jost-variable-latin.woff2").read_bytes()).decode()
-LOGO = (DS / "assets" / "logo-vega.svg").read_text(encoding="utf-8")
-# o símbolo da marca é o monograma da v4 (V habitado por Lyra + estrela de
-# seis raios). Vem de arquivo, nunca redesenhado — regra do repo da Vega.
-MONO = (DS / "assets" / "vega-monograma.svg").read_text(encoding="utf-8")
-MONO_W = 52           # pequeno: presença de assinatura, não de logo
+LOGO = (DS / "assets" / "vega-lockup-peca.svg").read_text(encoding="utf-8")
 
 
 def render(nome, op, RAIO):
@@ -45,10 +41,15 @@ html,body{{width:{W}px;height:{H}px;overflow:hidden;background:#050505}}
   background-image:radial-gradient(circle at center,
      rgba(242,234,217,{op}) {RAIO}px, transparent {RAIO + .1}px);
   background-size:{MALHA}px {MALHA}px}}
-/* Wordmark sozinho no topo ESQUERDO, 150px, margens 70/74 do sistema.
-   O monograma saiu: com o wordmark à esquerda os dois brigavam pelo mesmo
-   canto, e a marca já se apresenta inteira nas letras. */
-.logo{{position:absolute;top:70px;left:74px;width:150px;line-height:0}}
+/* Lockup de PEÇA no topo ESQUERDO (`vega-lockup-peca.svg`, gerado por
+   design-system/lockup_peca.py). Na v5 o wordmark não vive solo, então o
+   canto leva a marca inteira — mas com a lira a 1.35 caps em vez das 2.188
+   do lockup de marca: no canto de um slide a marca é assinatura, e a lira
+   cheia lia como símbolo grande demais. Mesma correção que o hero do site
+   fez a 1.55. As duas âncoras não mudam desde a v4: a tinta começa na
+   margem 74 e o meio da caixa alta segue na linha 101; caixa e offsets
+   saem medidos daí, não chutados. */
+.logo{{position:absolute;top:72px;left:65px;width:196px;line-height:0}}
 .logo svg{{width:100%;height:auto;display:block}}
 </style></head><body>
 <div class="canvas"><div class="grid"></div>

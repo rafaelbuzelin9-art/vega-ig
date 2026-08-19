@@ -30,7 +30,7 @@ fora do repo.
 
 | pasta | conteúdo |
 |---|---|
-| `assets/` | `base-atlas.png` (+@2x), `preset.css`, `cards.css`, `jost-variable-latin.woff2`, `logo-vega.svg` |
+| `assets/` | `base-atlas.png` (+@2x), `preset.css`, `cards.css`, `jost-variable-latin.woff2`, `vega-lockup.svg` |
 | `scripts/` | `compor.py` (slide), `anima.py` (vídeo), `captura.js` (quadro a quadro) |
 | `references/` | `sistema.md` (medidas e regras), `componentes.md` (o card e os temas), `motion.md` (a animação) |
 

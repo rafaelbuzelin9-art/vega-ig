@@ -19,7 +19,7 @@ Antes: salve o fundo gerado em `fundos/slideN-raw.png` e adicione a entrada em `
 | Fundo | gerado em 3:4, cortado pelo topo |
 | Preto | `#050505` — preto puro é levantado no render |
 | Grid | pontos 38,5px, creme a 25%, ponto 1,2px, de borda a borda (v2, 13/ago/2026) |
-| Logo | `logo-vega.svg`, 150px, topo 70 / esq 74 |
+| Logo | `vega-lockup.svg` (v5), caixa 250px, topo 43 / esq 47 — tinta na margem 74, cap na linha 101 |
 | Texto | centralizado, topo 170, entrelinha 105% |
 | Linha 1 | Jost 200, 72px, `#F2EAD9` |
 | Linha 2 | Jost 200, 104px, `nowrap` |
@@ -42,7 +42,7 @@ background-size:38.5px 38.5px;   /* 28 colunas em 1080, primeiro centro em x=19 
 Piso `#050505`, pontos de borda a borda (o v1 esvaía 12% antes da linha; a
 classe `.grid.esvai-v1` guarda esse comportamento para refazer peça antiga).
 Conferência numérica contra o arquivo: piso 5, pico (61,59,55) contra
-(60,58,55) do alvo. Logo do fundo-base = `logo-vega.svg` 150px, topo 70 / esq
+(60,58,55) do alvo. Logo do fundo-base = `vega-lockup.svg` caixa 250px, topo 43 / esq
 74 — igual ao preset, não mudou.
 
 ## Cinco coisas aprendidas — não repetir

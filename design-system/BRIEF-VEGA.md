@@ -71,7 +71,7 @@ Nunca `#000000` nem `#FFFFFF`. Azul só como aura/detalhe, jamais tinta de texto
 - Grid de pontos no campo: raio ~1.2px, malha 38,5px, cor do texto a 25% de opacidade,
   esvaindo antes da linha.
 - Logo no topo-esquerdo, 150px de largura, margens 70px/74px
-  (assets/logo-vega.svg no escuro, logo-vega-tinta.svg no claro).
+  (assets/vega-lockup.svg no escuro, vega-lockup-tinta.svg no claro).
 - Texto centrado no campo, no meio do vazio entre a logo e o elemento da cena.
 - **Assinatura da série: UM elemento da cena atravessa a linha** e invade o campo
   (cabeça de busto, frontão, cúpula...). Nos mockups HTML, simule a cena com um

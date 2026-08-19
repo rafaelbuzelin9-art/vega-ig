@@ -91,7 +91,7 @@ def montar_overlay(texto, txt_top, l1=None, claro=False):
                 "\n.osub{color:#6E6253!important}"
                 "\n.grid{background-image:radial-gradient(circle at center,rgba(5,5,5,.10) 1.2px,transparent 1.3px)!important;"
                 "-webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 calc(var(--field) - 12%),transparent var(--field))}")
-    logosvg = (ROOT/("logo-vega-tinta.svg" if claro else "logo-vega.svg")).read_text()
+    logosvg = (ROOT/("vega-lockup-peca-tinta.svg" if claro else "vega-lockup-peca.svg")).read_text()
     html = f"""<!DOCTYPE html><html><head><meta charset="utf-8"><style>{css}</style></head>
 <body><div class="canvas"><div class="grid"></div>
 <div class="logo">{logosvg}</div>

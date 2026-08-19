@@ -290,7 +290,7 @@ def render(nome, cfg):
     if cfg.get("corpo"):
         css += f"\n.obj{{font-size:{cfg['corpo']}px}}"
 
-    logo = "logo-vega-tinta.svg" if cfg["claro"] else "logo-vega.svg"
+    logo = "vega-lockup-peca-tinta.svg" if cfg["claro"] else "vega-lockup-peca.svg"
     linhas = "".join(f'<span class="obj">{enfase(l)}</span>' for l in cfg["obj"])
     if cfg.get("itens"):
         linhas += '<span class="itens">' + "".join(

@@ -104,7 +104,7 @@ def render(n, cfg):
 <style>{css}</style></head><body><div class="canvas">
 {campo}
 <div class="grid"></div>
-<div class="logo">{(ROOT / "logo-vega.svg").read_text()}</div>
+<div class="logo">{(ROOT / "vega-lockup-peca.svg").read_text()}</div>
 <div class="txt">{linhas}</div>
 </div></body></html>"""
 

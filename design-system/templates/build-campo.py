@@ -23,9 +23,9 @@ DS     = BASE.parent                              # design-system
 CHROME = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
 
 FIELD  = 0.505          # linha do sistema — não mexer sem revalidar tudo
-LOGO_W = 150
-LOGO_H = LOGO_W * 616 / 1627      # viewBox do logo-vega.svg
-LOGO_TOP = 70
+LOGO_W = 196                      # caixa do lockup de peca (a v4 era 150)
+LOGO_H = LOGO_W * 1417.89 / 4888.8  # viewBox do vega-lockup-peca.svg
+LOGO_TOP = 72                     # tinta na margem 74, cap na linha 101
 
 FORMATOS = {
     "feed": {"w": 1080, "h": 1350, "txt_top": 170},   # 170 = valor travado no slide 1
@@ -75,7 +75,7 @@ def html(cfg, overlay):
 <div class="canvas">
 <div class="field"></div>
 <div class="grid"></div>
-<div class="logo">{(DS / "assets" / "logo-vega.svg").read_text()}</div>
+<div class="logo">{(DS / "assets" / "vega-lockup-peca.svg").read_text()}</div>
 {corpo}
 </div></body></html>"""
 

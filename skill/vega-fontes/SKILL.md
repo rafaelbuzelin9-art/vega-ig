@@ -12,7 +12,7 @@ Pipeline validado no carrossel 01 (ago/2026). A regra de ouro: **generativo só 
 ```
 CAMPO (preto #050505 ou creme #F2EAD9) ─ linha DURA em ~50.5% (ajustável por slide)
 ├── grid de pontos 26px (creme 10% no escuro / preto 10% no claro)
-├── logo topo-esq 150px (logo-vega.svg no escuro / logo-vega-tinta.svg no claro)
+├── logo topo-esq caixa 250px (vega-lockup.svg no escuro / vega-lockup-tinta.svg no claro)
 ├── texto Jost centrado  +  UM elemento da cena cruzando a linha (assinatura)
 CENA (gerada) ─ arquitetura clássica, tochas âmbar, loop de vídeo
 ```
@@ -31,7 +31,7 @@ CENA (gerada) ─ arquitetura clássica, tochas âmbar, loop de vídeo
 3. **Upscale** (vídeo): CLI autenticado —
    `higgsfield generate create bytedance_video_upscale --video <raw.mp4> --model_version pro --preset aigc --resolution 2k --fps 24 --wait`
 4. **Composição**: scripts desta skill (rodar da pasta do projeto, que precisa ter
-   `fonts/`, `logo-vega*.svg`, `preset.css` — ou usar os desta skill).
+   `fonts/`, `vega-lockup*.svg`, `preset.css` — ou usar os desta skill).
    - Still: `python3 render.py <n>` (config no dicionário `SLIDES` do script)
    - Vídeo: `python3 compositor_video.py <video.mp4> <n> "<modo:texto>" [l1|-] [txt_top|-] [align] [claro]`
    - Claro com cena full-bleed sem cruzamento: `python3 card_claro.py <video.mp4>` (edite CARD/RAIO/texto no script)
