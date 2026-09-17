@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head><meta charset="utf-8">
+<style>
+@font-face{font-family:Jost;src:url('fonts/jost-variable-latin.woff2')format('woff2');font-weight:100 900;font-display:block}
+@font-face{font-family:InterV;src:url('fonts/inter-var.woff2')format('woff2');font-weight:100 900;font-display:block}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{background:#111}
+:root{
+  --creme:#F2EAD9; --preto:#050505; --tinta:#2E2822;
+  --sepia:#6E6253; --fio:rgba(110,98,83,.32);
+}
+.peca{position:relative;width:1080px;height:1350px;overflow:hidden;
+  background:url('assets/fundo.png') center/1080px 1350px no-repeat}
+
+/* topo */
+.topo{position:absolute;left:78px;right:78px;top:64px;display:flex;
+  align-items:center;justify-content:space-between}
+.eyebrow{font:300 25px/1 Jost;letter-spacing:.26em;text-transform:uppercase;color:var(--sepia)}
+.topo img{height:30px;opacity:.92}
+
+/* titulo com a elipse a mao */
+.tit{position:absolute;left:78px;top:150px}
+.tit h1{font:300 128px/1 Jost;letter-spacing:-.025em;color:var(--preto);
+  text-transform:uppercase;position:relative;display:inline-block;padding:6px 30px 10px 22px}
+.elipse{position:absolute;left:-28px;top:-22px;width:412px;height:198px;pointer-events:none}
+.trad{margin-top:52px;font:300 44px/1.18 Jost;letter-spacing:.01em;color:var(--tinta)}
+
+/* formula */
+.fx{position:absolute;left:78px;top:432px;width:924px;border:1.5px solid var(--preto);
+  padding:26px 34px 28px}
+.fx p{font:300 40px/1.25 Jost;letter-spacing:.005em;color:var(--preto)}
+.fx b{font-weight:500}
+.ex{position:absolute;left:112px;top:578px;width:950px;
+  font:400 28px/1.45 InterV;color:var(--tinta)}
+.ex .seta{color:var(--sepia);margin-right:12px}
+.ex .res{font-weight:600;color:var(--preto);border-bottom:1.5px solid var(--preto);padding-bottom:3px}
+
+/* zona de baixo */
+.col-txt{position:absolute;left:78px;top:688px;width:404px}
+.col-txt p{font:400 30px/1.46 InterV;color:var(--tinta)}
+.col-txt p+p{margin-top:22px}
+.col-des{position:absolute;left:526px;top:652px;width:482px}
+
+/* campo escuro: a regra */
+.nunca{position:absolute;left:78px;right:78px;top:1152px}
+.nunca .rot{font:300 23px/1 Jost;letter-spacing:.3em;text-transform:uppercase;
+  color:var(--sepia);margin-bottom:16px}
+.nunca p{font:300 38px/1.30 Jost;letter-spacing:-.01em;color:var(--creme)}
+.nunca b{font-weight:500}
+</style></head><body>
+<div class="peca">
+  <div class="topo"><span class="eyebrow">Os números do seu anúncio</span>
+    <img src="assets/vega-lockup-peca-tinta.svg" alt=""></div>
+
+  <div class="tit">
+    <h1>CPM</h1>
+    <svg class="elipse" viewBox="0 0 420 224">
+      <defs><filter id="mao"><feTurbulence type="fractalNoise" baseFrequency="0.018"
+        numOctaves="3" seed="7" result="n"/>
+        <feDisplacementMap in="SourceGraphic" in2="n" scale="7"/></filter></defs>
+      <path d="M212 26 C 326 24 402 56 405 110 C 408 168 312 204 206 205 C 100 206 18 172 16 114 C 14 58 96 30 209 26"
+            fill="none" stroke="#050505" stroke-width="3.2"
+            stroke-linecap="round" filter="url(#mao)"/>
+    </svg>
+    <div class="trad">Quanto custa aparecer mil vezes</div>
+  </div>
+
+  <div class="fx"><p>CPM = gasto <b>dividido por</b> impressões <b>vezes mil</b></p></div>
+  <div class="ex"><span class="seta">&#8627;</span>R$ 500 divididos por 50.000 impressões
+    vezes mil = <span class="res">R$ 10 de CPM</span></div>
+
+  <div class="col-txt">
+    <p>O CPM não é o preço que você escolhe. É o preço que o leilão cobra de você.</p>
+    <p>Ele sobe quando o público é pequeno ou quando o seu anúncio já cansou quem viu.</p>
+  </div>
+
+  <div class="col-des">
+    <svg viewBox="0 0 482 430" width="482" height="430">
+      <defs><filter id="m2"><feTurbulence type="fractalNoise" baseFrequency="0.02"
+        numOctaves="3" seed="3" result="n"/>
+        <feDisplacementMap in="SourceGraphic" in2="n" scale="4.5"/></filter>
+        <marker id="pt" markerWidth="9" markerHeight="9" refX="6" refY="4.5" orient="auto">
+          <path d="M0 0 L8 4.5 L0 9" fill="none" stroke="#2E2822" stroke-width="1.6"/></marker>
+      </defs>
+      <g filter="url(#m2)" fill="none" stroke="#2E2822" stroke-width="2.4"
+         stroke-linecap="round" stroke-linejoin="round">
+        <rect x="126" y="16" width="232" height="120" rx="2"/>
+        <line x1="126" y1="136" x2="358" y2="136" stroke-width="3.4"/>
+        <g>
+          <rect x="60" y="272" width="92" height="58" rx="2"/>
+          <rect x="196" y="252" width="92" height="78" rx="2"/>
+          <rect x="332" y="218" width="92" height="112" rx="2"/>
+          <line x1="378" y1="218" x2="378" y2="152" stroke-dasharray="7 9"/>
+          <path d="M378 150 L 358 140" marker-end="url(#pt)"/>
+        </g>
+        <line x1="40" y1="330" x2="442" y2="330" stroke-width="1.4"/>
+      </g>
+      <g font-family="InterV" font-size="23" fill="#2E2822">
+        <text x="242" y="86" text-anchor="middle" font-size="25">mil exibições</text>
+        <text x="106" y="310" text-anchor="middle">R$ 8</text>
+        <text x="242" y="302" text-anchor="middle">R$ 10</text>
+        <text x="378" y="284" text-anchor="middle" font-weight="600">R$ 14</text>
+        <text x="241" y="372" text-anchor="middle" fill="#6E6253">quem paga mais aparece</text>
+        <text x="241" y="404" text-anchor="middle" fill="#6E6253">e define o seu preço</text>
+      </g>
+    </svg>
+  </div>
+
+  <div class="nunca">
+    <div class="rot">Nunca</div>
+    <p>Nunca comemore CPM baixo sozinho<br>barato para a pessoa errada <b>continua caro</b></p>
+  </div>
+</div></body></html>

@@ -15,6 +15,7 @@ o pipeline de composição e o primeiro carrossel aprovado como referência.
 | [`design-system/templates/`](design-system/templates/) | O campo (quadro escuro + grid + logo) pronto em feed 1080×1350 e reel 1080×1920 — HTML editável + PNG com alfa para sobrepor a qualquer cena | Quem quer o asset pronto em vez do código |
 | [`skill/vega-fontes/`](skill/vega-fontes/) | A skill completa de produção: SKILL.md, os 3 compositores Python, regras e guardrails | **Claude Code** — copiar para `~/.claude/skills/` e invocar `/vega-fontes` |
 | [`carrossel-01/`](carrossel-01/) | O carrossel aprovado: `final-4-slides/` (a versão postável) e `arquivo-8-slides/` (a narrativa longa original) | Referência de qualidade e régua do sistema |
+| [`carrossel-metricas/`](carrossel-metricas/) | O carrossel das quatro métricas: `final-6-slides/` (a versão postável), a `oficina/` que re-renderiza capa e fecho, e o `LEIA.md` com o formato de ficha e a técnica do arco calculado na silhueta | Referência do formato didático |
 | [`producao/`](producao/) | Post-mortem honesto da produção 01 — os 16 erros que geraram os guardrails | Quem for produzir o próximo |
 
 ## O sistema em 30 segundos
