@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Gráfico na tela do laptop (C2)</title>
+<style>
+  html,body{margin:0;background:transparent;width:480px;height:854px;overflow:hidden}
+  #palco{position:relative;width:480px;height:854px;background:transparent}
+  /* tela plana 1600x1000 (o gráfico), deformada para o quadrilátero da tela do laptop */
+  /* canvas pequeno (640x400, ~2x o tamanho da tela no take) para o rebaixo ser filtrado com qualidade */
+  #tela{position:absolute;left:0;top:0;width:640px;height:400px;transform-origin:0 0;overflow:hidden;opacity:0;border-radius:8px}
+  canvas{display:block;width:640px;height:400px}
+</style>
+</head>
+<body>
+<div id="palco"><div id="tela"><canvas id="cv" width="640" height="400"></canvas></div></div>
+<script>
+  // Cantos da tela do laptop no take da C2 (480x854), lidos na ampliação 6x: TL, TR, BR, BL.
+  const Q = [[30,334],[289,319],[319,516],[62,547]];
+  const INICIO = +(new URLSearchParams(location.search).get('inicio') || 0.9); // s em que o gráfico começa (final: 1.35)
+  const FPSG = 30, NG = 150; // quadros do gráfico A compacto (grafico.html?compacto=1)
+  const SW=640, SH=400;
+  function homografia(src, dst){
+    const A=[], B=[];
+    for(let i=0;i<4;i++){ const [x,y]=src[i], [u,v]=dst[i];
+      A.push([x,y,1,0,0,0,-u*x,-u*y]); B.push(u);
+      A.push([0,0,0,x,y,1,-v*x,-v*y]); B.push(v); }
+    const n=8; for(let c=0;c<n;c++){ let p=c; for(let r=c+1;r<n;r++) if(Math.abs(A[r][c])>Math.abs(A[p][c])) p=r;
+      [A[c],A[p]]=[A[p],A[c]]; [B[c],B[p]]=[B[p],B[c]];
+      for(let r=0;r<n;r++){ if(r===c) continue; const f=A[r][c]/A[c][c]; for(let k=c;k<n;k++) A[r][k]-=f*A[c][k]; B[r]-=f*B[c]; } }
+    const h=B.map((b,i)=>b/A[i][i]); const [a,b,c,d,e,f,g,hh]=h;
+    return `matrix3d(${a},${d},0,${g}, ${b},${e},0,${hh}, 0,0,1,0, ${c},${f},0,1)`;
+  }
+  const tela=document.getElementById('tela');
+  tela.style.transform = homografia([[0,0],[SW,0],[SW,SH],[0,SH]], Q);
+  const ctx=document.getElementById('cv').getContext('2d');
+  ctx.imageSmoothingEnabled=true; ctx.imageSmoothingQuality='high';
+  const imgs=[];
+  window.pronto = Promise.all(Array.from({length:NG},(_,i)=>{ const im=new Image(); im.src='quadros-grafico-compacto/q'+String(i).padStart(4,'0')+'.png'; imgs[i]=im; return im.decode(); }));
+  window.frame=function(t){
+    const tc = t - INICIO;
+    if (tc < 0){ tela.style.opacity=0; return; }
+    const i = Math.min(NG-1, Math.floor(tc*FPSG));
+    if (imgs[i] && imgs[i].complete) ctx.drawImage(imgs[i],0,0,SW,SH);
+    tela.style.opacity = Math.min(1, tc/0.25);
+  };
+  window.pronto.then(()=>window.frame(0));
+</script>
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Cartela sobre o quadro congelado</title>
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@200;500&display=swap" rel="stylesheet">
+<style>
+  html,body{margin:0;background:#000;width:480px;height:854px;overflow:hidden}
+  #palco{position:relative;width:480px;height:854px;background:#000;overflow:hidden}
+  #gelo{position:absolute;inset:0;width:480px;height:854px;object-fit:cover}
+  #veu{position:absolute;inset:0;background:#000;opacity:0}
+  .t{position:absolute;left:36px;right:36px;text-align:center;color:#F2EAD9;font-family:'Jost',sans-serif;
+     font-weight:200;letter-spacing:.02em;opacity:0}
+  #t1{top:300px;font-size:40px}
+  #t2{top:372px;font-size:46px;line-height:1.22}
+  #t2 b{font-weight:500}
+</style>
+</head>
+<body>
+<div id="palco">
+  <img id="gelo" src="../comp/gelo.png">
+  <div id="veu"></div>
+  <div id="t1" class="t">algum tempo depois…</div>
+  <div id="t2" class="t">o Faísca já estava<br>vendendo <b>sozinho</b></div>
+</div>
+<script>
+  const easeOut=x=>1-Math.pow(1-Math.min(Math.max(x,0),1),3);
+  // Tempos por parâmetro (?t1=…&t2=…): quando cada linha entra. Final usado: t1=1.3 t2=1.6, DUR 6.4. Véu sempre em 0,35-0,8.
+  const P=new URLSearchParams(location.search); const T1=+(P.get('t1')||0.6), T2=+(P.get('t2')||1.4);
+  window.frame=function(t){
+    document.getElementById('veu').style.opacity = 0.62*easeOut((t-0.35)/0.45);
+    const t1=document.getElementById('t1'), t2=document.getElementById('t2');
+    const a=easeOut((t-T1)/0.4), b=easeOut((t-T2)/0.4);
+    t1.style.opacity=a; t1.style.transform='translateY('+(12*(1-a))+'px)';
+    t2.style.opacity=b; t2.style.transform='translateY('+(12*(1-b))+'px)';
+  };
+  window.frame(0);
+  if(!location.search.includes('parado')){ const t0=performance.now(); (function tick(){ window.frame(((performance.now()-t0)/1000)%3.2); requestAnimationFrame(tick); })(); }
+</script>
+</body>
+</html>

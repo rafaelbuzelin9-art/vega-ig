@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Tela do celular C4</title>
+<style>
+  html,body{margin:0;background:#000;width:480px;height:854px;overflow:hidden;
+    font-family:"Helvetica Neue",-apple-system,Helvetica,Arial,sans-serif}
+  #palco{position:relative;width:480px;height:854px;background:#000}
+  /* A tela "plana" do celular: 390x800, depois deformada para o quadrilátero medido no take. */
+  #tela{position:absolute;left:0;top:0;width:390px;height:800px;transform-origin:0 0;overflow:hidden;background:#000}
+  .fase{position:absolute;inset:0;opacity:0}
+  /* balões */
+  #chat{background:#000}
+  .bolha{position:absolute;height:44px;border-radius:22px;background:#4ee97f;
+    box-shadow:0 0 18px rgba(78,233,127,.55)}
+  .bolha.esq{left:34px}
+  .bolha.dir{right:34px;background:#2fd06c}
+  #flash{position:absolute;inset:0;background:#4ee97f;opacity:0}
+  /* conserto */
+  #conserto{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:34px;color:#fff}
+  #engr{width:150px;height:150px}
+  #barra{width:230px;height:14px;border-radius:7px;background:#3a2a1e;overflow:hidden}
+  #barra i{display:block;height:100%;width:0;background:linear-gradient(90deg,#ff8a3d,#ffd36b);border-radius:7px;box-shadow:0 0 14px #ff9a4a}
+  #txt{font-size:30px;letter-spacing:.06em;color:#ffd9b8}
+  /* resolvido */
+  #ok{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:30px}
+  #circ{width:200px;height:200px;border-radius:50%;background:#4ee97f;box-shadow:0 0 40px rgba(78,233,127,.8);
+    display:flex;align-items:center;justify-content:center;transform:scale(0)}
+  #ok span{font-size:34px;letter-spacing:.08em;color:#bfffd3;opacity:0}
+</style>
+</head>
+<body>
+<div id="palco">
+  <div id="tela">
+    <div id="chat" class="fase"><div id="flash"></div></div>
+    <div id="conserto" class="fase">
+      <svg id="engr" viewBox="0 0 100 100"><g fill="#ffb366" stroke="#ff7a1a" stroke-width="2">
+        <path d="M50 8l7 0 2 9 8 3 8-5 5 5-5 8 3 8 9 2 0 7-9 2-3 8 5 8-5 5-8-5-8 3-2 9-7 0-2-9-8-3-8 5-5-5 5-8-3-8-9-2 0-7 9-2 3-8-5-8 5-5 8 5 8-3z"/>
+        <circle cx="50" cy="50" r="14" fill="#000"/></g></svg>
+      <div id="barra"><i></i></div>
+      <div id="txt">resolvendo…</div>
+    </div>
+    <div id="ok" class="fase">
+      <div id="circ"><svg width="120" height="120" viewBox="0 0 100 100"><path d="M20 52l20 20 40-44" fill="none" stroke="#063" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <span>resolvido</span>
+    </div>
+  </div>
+</div>
+<script>
+  // Quadrilátero da tela medido no take da C4 (480x854): TL, TR, BR, BL.
+  const Q = [[72,412],[205,368],[388,552],[238,612]];
+  const SW = 390, SH = 800;
+  // Homografia do retângulo (0,0)-(SW,SH) para Q -> matrix3d do CSS.
+  function homografia(src, dst){
+    const A=[], B=[];
+    for(let i=0;i<4;i++){ const [x,y]=src[i], [u,v]=dst[i];
+      A.push([x,y,1,0,0,0,-u*x,-u*y]); B.push(u);
+      A.push([0,0,0,x,y,1,-v*x,-v*y]); B.push(v); }
+    const n=8; for(let c=0;c<n;c++){ let p=c; for(let r=c+1;r<n;r++) if(Math.abs(A[r][c])>Math.abs(A[p][c])) p=r;
+      [A[c],A[p]]=[A[p],A[c]]; [B[c],B[p]]=[B[p],B[c]];
+      for(let r=0;r<n;r++){ if(r===c) continue; const f=A[r][c]/A[c][c]; for(let k=c;k<n;k++) A[r][k]-=f*A[c][k]; B[r]-=f*B[c]; } }
+    const h=B.map((b,i)=>b/A[i][i]);
+    const [a,b,c,d,e,f,g,hh]=h;
+    return `matrix3d(${a},${d},0,${g}, ${b},${e},0,${hh}, 0,0,1,0, ${c},${f},0,1)`;
+  }
+  document.getElementById('tela').style.transform = homografia([[0,0],[SW,0],[SW,SH],[0,SH]], Q);
+
+  // Balões: lista determinística (semente fixa) com tempo de chegada acelerando de 0 a 3,2s.
+  const chegadas=[]; let t=0.15, dt=0.36; let s=7;
+  const rnd=()=>{ s=(s*9301+49297)%233280; return s/233280; };
+  while(t<3.2){ chegadas.push({t, w: 150+rnd()*130, lado: rnd()<0.6?'esq':'dir'}); t+=dt; dt=Math.max(0.11, dt*0.9); }
+  const chat=document.getElementById('chat');
+  const bolhas=chegadas.map(c=>{ const d=document.createElement('div'); d.className='bolha '+c.lado; d.style.width=c.w+'px'; chat.appendChild(d); return d; });
+  const easeOut=x=>1-Math.pow(1-Math.min(Math.max(x,0),1),3);
+  const easeBack=x=>{x=Math.min(Math.max(x,0),1);const c=1.70158;return 1+(c+1)*Math.pow(x-1,3)+c*Math.pow(x-1,2);};
+
+  window.frame=function(t){
+    const fase=(id,on)=>document.getElementById(id).style.opacity=on?1:0;
+    // ---- 0 a 3,25s: mensagens chegando
+    const emChat = t<3.25;
+    fase('chat', emChat);
+    if(emChat){
+      let chegaram=chegadas.filter(c=>c.t<=t).length;
+      let flash=0;
+      bolhas.forEach((b,i)=>{
+        const c=chegadas[i];
+        if(c.t>t){ b.style.opacity=0; return; }
+        const idx=chegaram-1-i; // 0 = mais recente (embaixo)
+        const entra=easeOut((t-c.t)/0.22);
+        const y = SH-70 - idx*58 + (1-entra)*40;
+        b.style.opacity=entra; b.style.top=y+'px';
+        b.style.transform='scale('+(0.6+0.4*entra)+')';
+        if(t-c.t<0.18) flash=Math.max(flash, 0.18*(1-(t-c.t)/0.18));
+      });
+      document.getElementById('flash').style.opacity=flash;
+    }
+    // ---- 3,3 a 5,65s: conserto
+    const emConserto = t>=3.3 && t<5.65;
+    fase('conserto', emConserto);
+    if(emConserto){
+      const p=(t-3.3)/2.3;
+      document.getElementById('engr').style.transform='rotate('+(p*720)+'deg)';
+      document.querySelector('#barra i').style.width=(easeOut(p)*100)+'%';
+      const pontos=Math.floor((t*3)%4); document.getElementById('txt').textContent='resolvendo'+'.'.repeat(pontos);
+      document.getElementById('conserto').style.opacity = t<3.5 ? (t-3.3)/0.2 : (t>5.45 ? (5.65-t)/0.2 : 1);
+    }
+    // ---- 6,3 a 7,45s: resolvido
+    const emOk = t>=6.3 && t<7.45;
+    fase('ok', emOk);
+    if(emOk){
+      const p=easeBack((t-6.3)/0.35);
+      document.getElementById('circ').style.transform='scale('+p+')';
+      document.querySelector('#ok span').style.opacity=easeOut((t-6.5)/0.25);
+      document.getElementById('ok').style.opacity = t>7.2 ? (7.45-t)/0.25 : 1;
+    }
+  };
+  window.frame(0);
+  if(!location.search.includes('parado')){ const t0=performance.now(); (function tick(){ window.frame(((performance.now()-t0)/1000)%8.2); requestAnimationFrame(tick); })(); }
+</script>
+</body>
+</html>

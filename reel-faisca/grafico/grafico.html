@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Grafico vendas</title>
+<style>
+  :root{
+    --bg:#141416; --card:#1b1b1e; --line:#2a2a2f; --txt:#e8e8ec; --mut:#8a8a94;
+    --green:#2fd07a;
+  }
+  html,body{margin:0;background:var(--bg);width:1600px;height:1000px;overflow:hidden;
+    font-family:"Helvetica Neue",-apple-system,Helvetica,Arial,sans-serif;color:var(--txt)}
+  #palco{position:relative;width:1600px;height:1000px}
+  .card{position:absolute;left:80px;top:80px;width:1440px;height:840px;background:var(--card);
+    border:2px solid var(--line);border-radius:28px}
+  .rotulo{position:absolute;left:150px;top:140px;font-size:34px;letter-spacing:.18em;
+    text-transform:uppercase;color:var(--mut);font-weight:500}
+  .sub{position:absolute;left:150px;top:196px;font-size:40px;color:var(--txt);font-weight:400}
+  .contador{position:absolute;right:150px;top:120px;font-size:200px;font-weight:700;
+    letter-spacing:-.03em;color:var(--green);line-height:1;font-variant-numeric:tabular-nums}
+  .contador small{font-size:110px;font-weight:600;margin-left:6px}
+  .legenda{position:absolute;right:160px;top:330px;font-size:34px;color:var(--mut)}
+  .grade{position:absolute;left:150px;right:150px;height:2px;background:var(--line)}
+  .barra{position:absolute;bottom:200px;width:260px;border-radius:18px 18px 6px 6px;
+    background:linear-gradient(180deg,#39e68b,#1fa85f)}
+  .barra.cinza{background:linear-gradient(180deg,#4a4a52,#36363c)}
+  .mes{position:absolute;bottom:130px;width:260px;text-align:center;font-size:40px;color:var(--mut);
+    letter-spacing:.06em}
+  .val{position:absolute;width:260px;text-align:center;font-size:48px;font-weight:600;color:var(--txt);
+    font-variant-numeric:tabular-nums}
+  /* ?compacto=1: versão para tela pequena (laptop no take): só o essencial, tudo maior */
+  body.compacto .sub, body.compacto .legenda{display:none}
+  body.compacto .rotulo{font-size:52px;top:130px;letter-spacing:.12em}
+  body.compacto .contador{font-size:300px;top:60px;right:120px}
+  body.compacto .contador small{font-size:160px}
+  body.compacto .val{font-size:72px;font-weight:700}
+  body.compacto .mes{font-size:64px;bottom:110px;color:#c9c9d2}
+  body.compacto .barra{width:300px}
+  body.compacto #b1{left:210px} body.compacto #b2{left:540px} body.compacto #b3{left:870px}
+  body.compacto #v1{left:210px} body.compacto #v2{left:540px} body.compacto #v3{left:870px}
+  body.compacto .mes:nth-of-type(1){left:210px}
+  /* ?compacto=1: versão para tela pequena (laptop no take): só o essencial, tudo maior */
+  body.compacto .sub, body.compacto .legenda{display:none}
+  body.compacto .rotulo{font-size:52px;top:130px;letter-spacing:.12em}
+  body.compacto .contador{font-size:300px;top:60px;right:120px}
+  body.compacto .contador small{font-size:160px}
+  body.compacto .val{font-size:72px;font-weight:700}
+  body.compacto .mes{font-size:64px;bottom:110px;color:#c9c9d2}
+  body.compacto .barra{width:300px}
+  body.compacto #b1{left:210px} body.compacto #b2{left:540px} body.compacto #b3{left:870px}
+</style>
+</head>
+<body>
+<div id="palco">
+  <div class="card"></div>
+  <div class="rotulo">Vendas pelo WhatsApp</div>
+  <div class="sub">Julho a setembro</div>
+  <div class="contador"><span id="num">1,0</span><small>x</small></div>
+  <div class="legenda">em relação a julho</div>
+
+  <div class="grade" style="bottom:200px"></div>
+  <div class="grade" style="bottom:330px;opacity:.5"></div>
+  <div class="grade" style="bottom:460px;opacity:.5"></div>
+  <div class="grade" style="bottom:590px;opacity:.5"></div>
+
+  <div id="b1" class="barra cinza" style="left:230px"></div>
+  <div id="b2" class="barra" style="left:530px"></div>
+  <div id="b3" class="barra" style="left:830px"></div>
+  <div id="v1" class="val" style="left:230px">1x</div>
+  <div id="v2" class="val" style="left:530px"></div>
+  <div id="v3" class="val" style="left:830px"></div>
+  <div class="mes" style="left:230px">jul</div>
+  <div class="mes" style="left:530px">ago</div>
+  <div class="mes" style="left:830px">set</div>
+</div>
+<script>
+  // Escala: 1x = 130px de altura. Teto do gráfico 390px (3x), abaixo do contador.
+  const UM = 130;
+  const ALVO = {b1:1.0, b2:1.9, b3:3.0};
+  const easeOut = t => 1 - Math.pow(1 - Math.min(Math.max(t,0),1), 3);
+  const back = t => { t=Math.min(Math.max(t,0),1); const c=1.70158; return 1 + (c+1)*Math.pow(t-1,3) + c*Math.pow(t-1,2); };
+
+  function setBarra(id, vid, mult, mostraVal, texto){
+    const h = Math.max(6, mult*UM);
+    const b = document.getElementById(id); b.style.height = h+'px';
+    const v = document.getElementById(vid);
+    v.style.bottom = (200 + h + 18)+'px';
+    v.style.opacity = mostraVal ? 1 : 0;
+    v.textContent = texto;
+  }
+  const fmt = x => x.toFixed(1).replace('.',',');
+
+  // Linha do tempo (segundos):
+  // 0,0-0,4 parado em julho (1x)
+  // 0,4-1,6 agosto cresce até 1,9x; contador acompanha
+  // 1,6-3,2 setembro cresce até 3,0x com leve estouro; contador acompanha
+  // 3,2-5,0 segura, 3,0x respira
+  window.frame = function(t){
+    const pA = easeOut((t-0.4)/1.2);
+    const pS = back((t-1.6)/1.6);
+    const ago = 1.0 + (ALVO.b2-1.0)*pA;
+    const set = t<1.6 ? 1.0 : 1.0 + (ALVO.b3-1.0)*pS;
+    setBarra('b1','v1',1.0,true,'1x');
+    setBarra('b2','v2',ago, t>=1.5, fmt(ago)+'x');
+    setBarra('b3','v3',set, t>=3.0, '3x');
+    let contador = t<0.4 ? 1.0 : t<1.6 ? ago : Math.max(ago, set);
+    if (t>=3.2) contador = 3.0;
+    document.getElementById('num').textContent = fmt(Math.min(contador,3.0));
+    const c = document.querySelector('.contador');
+    const resp = t>=3.2 ? 1 + 0.015*Math.sin((t-3.2)*2*Math.PI/1.2) : (t>=1.6 && t<3.2 ? 1 + 0.06*Math.sin(Math.PI*Math.min((t-1.6)/1.6,1)) : 1);
+    c.style.transform = 'scale('+resp+')'; c.style.transformOrigin = 'right top';
+  };
+  if (location.search.includes('compacto')) {
+    document.body.classList.add('compacto');
+    // meses realinhados às barras largas
+    const meses=document.querySelectorAll('.mes'); [210,540,870].forEach((x,i)=>{ meses[i].style.left=x+'px'; meses[i].style.width='300px'; });
+    document.querySelectorAll('.val').forEach((v,i)=>v.style.width='300px');
+  }
+  window.frame(0);
+  // Modo navegador: toca sozinho.
+  if (!location.search.includes('parado')) {
+    const t0 = performance.now();
+    (function tick(){ const t=((performance.now()-t0)/1000)%5.5; window.frame(t); requestAnimationFrame(tick); })();
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Legenda queimada (segue a narração)</title>
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@200;500&display=swap" rel="stylesheet">
+<style>
+  html,body{margin:0;background:transparent;width:480px;height:854px;overflow:hidden}
+  #palco{position:relative;width:480px;height:854px}
+  /* a faixa precisa de uma moldura larga (left/right), senão o inline-block herda metade da tela e quebra em 4 linhas */
+  #moldura{position:absolute;left:30px;right:30px;bottom:196px;text-align:center}
+  #faixa{display:inline-block;max-width:420px;box-sizing:border-box;
+    padding:9px 18px 11px;border-radius:12px;background:rgba(4,4,4,.42);
+    font-family:'Jost',sans-serif;font-weight:200;font-size:30px;line-height:1.2;letter-spacing:.015em;
+    color:#F2EAD9;text-align:center;white-space:pre-line;text-wrap:balance;opacity:0}
+  #faixa b{font-weight:500}
+</style>
+</head>
+<body>
+<div id="palco"><div id="moldura"><div id="faixa"></div></div></div>
+<script>
+  // Regra do Rafael: a legenda é a fala dele palavra por palavra (nunca resumo).
+  // [deixa da faixa no vídeo (s), início e fim relativos ao áudio da faixa, texto]. Tempos: whisper-cli -ml 1.
+  const L=[
+    [1.30,0.11,1.30,"esse é o <b>Faísca</b>,"],
+    [1.30,1.35,3.00,"um agente de IA criado por nós"],
+    [1.30,3.05,5.52,"para atender o <b>WhatsApp</b>\nde um de nossos clientes"],
+    [7.17,0.06,1.40,"e em menos de <b>quatro meses</b>,"],
+    [7.17,1.42,3.62,"as vendas desse cliente <b>triplicaram</b>"],
+    [12.33,0.11,2.20,"antes, a loja <b>sofria</b> para responder,"],
+    [12.33,2.24,3.15,"e um detalhe,"],
+    [12.33,3.19,5.38,"tinha cliente que esperava <b>30 minutos</b>"],
+    [18.71,0.11,2.10,"hoje, todos são respondidos"],
+    [18.71,2.12,3.83,"em menos de <b>um minuto</b>"],
+    [22.80,0.11,1.55,"isso que você tá lendo,"],
+    [22.80,1.60,3.71,"o Faisquinha já tá até vendendo <b>sozinho</b> hoje"],
+    [30.38,0.06,0.72,"ih, olha lá,"],
+    [30.38,0.76,2.31,"tá <b>se achando</b>, hein, Faísca!"],
+    [34.06,0.08,1.55,"e tá <b>certíssimo</b>!"],
+    [34.06,1.59,3.69,"ele tá vendendo até com a <b>loja fechada</b>"],
+    [38.71,0.06,2.20,"o Faísca é um dos vários <b>agentes de IA</b>"],
+    [38.71,2.22,3.00,"que a VEGA cria."],
+    [38.71,3.04,5.35,"hoje ele trabalha para uma <b>gráfica</b> parceira nossa"],
+    [38.71,5.38,7.05,"e se o seu negócio está <b>perdendo venda</b>"],
+    [38.71,7.08,8.58,"ou travado em algum problema,"],
+    [38.71,8.62,9.33,"fale com a <b>VEGA</b>"],
+    [38.71,9.35,11.23,"e agende um <b>diagnóstico gratuito</b>"],
+  ].map(([c,a,b,t])=>({a:c+a,b:c+b,t}));
+  const F=0.12, f=document.getElementById('faixa'), clamp=x=>Math.min(Math.max(x,0),1);
+  let atual=null;
+  window.frame=function(t){
+    const l=L.find(l=>t>=l.a && t<l.b);
+    if(!l){ f.style.opacity=0; return; }
+    if(l!==atual){ f.innerHTML=l.t; atual=l; }
+    const a=clamp((t-l.a)/F)*clamp((l.b-t)/F);
+    f.style.opacity=a; f.style.transform='translateY('+(5*(1-a))+'px)';
+  };
+  const P=new URLSearchParams(location.search);
+  if(P.get('t')) window.frame(+P.get('t'));
+</script>
+</body>
+</html>
