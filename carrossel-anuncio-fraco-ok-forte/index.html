@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>VEGA · Anúncio fraco, ok, forte</title>
+<style>
+/* Identidade v5 (vega-systems/brand/IDENTIDADE-VISUAL.md + vega-ig/design-system/BRIEF-VEGA.md)
+   Preto Cine domina · Jost 200 + uma palavra 500 por bloco · Inter 300 · ênfase por cor
+   hairline Sépia 40 · azul só como aura, uma vez por tela · sem exclamação, sem travessão */
+@font-face{font-family:'Jost';src:url(assets/jost-variable-latin.woff2) format('woff2');font-weight:100 900}
+@font-face{font-family:'Inter';src:url(assets/inter-300.woff2) format('woff2');font-weight:300}
+
+:root{
+  --preto:#050505; --creme:#F2EAD9; --creme-q:#F6EFDE; --areia:#E7DCC6;
+  --sepia-c:#9C8F7D; --sepia40:#6E6253; --azul:29,67,184;
+  --fio-escuro:rgba(110,98,83,.28); --fio-claro:rgba(5,5,5,.22);
+  --glow:0 0 .17em rgba(242,234,217,.30),0 0 .53em rgba(242,234,217,.14);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#1a1816;font-family:'Inter',sans-serif;font-weight:300}
+
+/* ---------- prancha ---------- */
+.prancha{display:flex;flex-wrap:wrap;gap:28px;padding:28px;justify-content:center}
+.moldura{width:432px;height:540px;position:relative}
+.moldura .s{transform:scale(.4);transform-origin:0 0;position:absolute;top:0;left:0}
+.moldura .n{position:absolute;bottom:-20px;left:0;color:#9C8F7D;font:12px 'Inter'}
+body.solo{background:none}
+body.solo .prancha{padding:0;display:block}
+body.solo .moldura{width:1080px;height:1350px}
+body.solo .moldura .s{transform:none}
+body.solo .moldura .n{display:none}
+
+/* ---------- campo ---------- */
+.s{width:1080px;height:1350px;position:relative;overflow:hidden}
+.s.escuro{background:var(--preto);color:var(--creme)}
+.s.claro{background:var(--creme);color:var(--preto)}
+.s::before{content:"";position:absolute;inset:0;pointer-events:none;background-size:38.5px 38.5px;background-position:19px 19px}
+.s.escuro::before{background-position:0 0;background-image:radial-gradient(circle at center,rgba(242,234,217,.20) 1.2px,transparent 1.3px)}
+.s.claro::before{background-image:radial-gradient(circle at center,rgba(5,5,5,.13) 1.2px,transparent 1.3px)}
+.logo{position:absolute;top:72px;left:65px;width:196px;line-height:0;z-index:3}
+.logo img{width:100%;display:block}
+.corpo{position:absolute;left:96px;right:96px;top:208px;z-index:2}
+
+/* tipografia da casa */
+.rot{font-family:'Jost';font-weight:200;font-size:26px;letter-spacing:.30em;margin-right:-.30em;text-transform:uppercase;line-height:1}
+.escuro .rot{color:var(--sepia-c)}
+.claro .rot{color:var(--sepia40)}
+.h{font-family:'Jost';font-weight:200;letter-spacing:-.025em;word-spacing:-.10em}
+.h b{font-weight:500}
+.escuro .h{color:var(--creme);text-shadow:var(--glow)}
+.escuro .h b{color:var(--creme-q);text-shadow:inherit}
+
+/* aura azul: luz difusa, sem borda visível, uma por tela */
+.aura{position:absolute;pointer-events:none;z-index:1;
+  display:none}
+
+/* régua de magnitude: fio + estrela (círculo cheio) que cresce com a força */
+.regua{position:relative;height:1px;background:var(--fio-escuro);flex:1}
+.regua i{position:absolute;left:0;top:-.5px;height:2px;width:calc(var(--m)*100%);background:var(--c)}
+.regua i::after{content:"";position:absolute;right:calc(var(--d)/-2);top:50%;width:var(--d);height:var(--d);border-radius:50%;
+  transform:translateY(-50%);background:var(--c);box-shadow:var(--sh,none)}
+.mag-fraco{--c:var(--sepia-c);--m:.18;--d:8px}
+.mag-ok{--c:var(--areia);--m:.55;--d:12px;--sh:0 0 10px rgba(231,220,198,.35)}
+.mag-forte{--c:var(--creme-q);--m:1;--d:18px;--sh:0 0 12px rgba(242,234,217,.55),0 0 34px rgba(242,234,217,.25)}
+
+/* ---------- capa ---------- */
+.capa .corpo{top:240px}
+.capa .premissa{font-family:'Jost';font-weight:200;font-size:30px;letter-spacing:.30em;margin-right:-.30em;text-transform:uppercase;color:var(--areia);margin-bottom:36px}
+.nivel{position:relative;border:2px solid var(--bc);padding:28px 44px 32px}
+.nivel + .nivel{margin-top:28px}
+.nivel.fraco{--bc:rgba(242,234,217,.40)}
+.nivel.ok{--bc:rgba(242,234,217,.70)}
+.nivel.forte{--bc:var(--creme-q);box-shadow:0 0 22px rgba(242,234,217,.20)}
+.nivel .rot{font-size:26px;color:var(--areia);margin-bottom:10px}
+.nivel .h{font-size:116px;line-height:1;letter-spacing:.04em;margin-right:-.04em;text-transform:uppercase;color:var(--creme)}
+.capa .nivel.forte .h b{font-weight:500}
+.nivel .regua{margin-top:26px;margin-right:10px}
+.arrasta{position:absolute;left:96px;bottom:150px;z-index:2;font-size:30px;color:var(--creme)!important}
+/* ---------- exemplo ---------- */
+.exemplo .nicho{font-family:'Jost';font-weight:500;font-size:46px;line-height:1;letter-spacing:.14em;margin-right:-.14em;text-transform:uppercase;color:var(--creme-q);text-shadow:0 0 .10em rgba(242,234,217,.45),0 0 .30em rgba(242,234,217,.20);margin-top:18px}
+.exemplo .titulo{font-size:76px;line-height:1.02;margin-top:22px;margin-bottom:8px;color:var(--creme-q)}
+.exemplo .corpo{top:104px}
+.exemplo .rot{color:var(--areia)}
+.linha{position:relative;margin-top:28px}
+.linha .cab{display:flex;align-items:center;gap:32px;margin-bottom:16px}
+.linha .cab .rot{width:150px;color:var(--areia)}
+.linha .moldura-txt{border:2px solid var(--bc);padding:20px 30px 22px}
+.linha p{font-size:29px;line-height:1.38;letter-spacing:.005em;color:var(--creme)}
+.linha.fraco{--bc:rgba(242,234,217,.40)}
+.linha.ok{--bc:rgba(242,234,217,.70)}
+.linha.forte{--bc:var(--creme-q)}
+.linha.forte .moldura-txt{box-shadow:0 0 18px rgba(242,234,217,.18)}
+.linha.forte .cab .rot{color:var(--creme)}
+.linha.forte p{color:var(--creme-q);font-size:30px}
+.linha.forte p + p{margin-top:12px}
+.exemplo .aura{left:-260px;top:-160px;width:1560px;height:860px}
+
+/* ---------- por que funciona (claro) ---------- */
+.porque .corpo{top:158px}
+.porque .h{font-size:150px;line-height:1.0;margin-bottom:80px}
+.item{display:flex;gap:32px;align-items:baseline;padding:40px 0;border-top:1px solid var(--fio-claro)}
+.item:last-child{border-bottom:1px solid var(--fio-claro)}
+.item .num{font-family:'Jost';font-weight:200;font-size:30px;letter-spacing:.06em;color:var(--preto);width:48px;flex:none}
+.item p{font-size:40px;line-height:1.3;color:var(--preto)}
+.item p b{font-weight:300;color:var(--preto)}
+
+/* ---------- fecho ---------- */
+.fecho .corpo{top:380px}
+.fecho .sub{font-size:36px;line-height:1.42;color:var(--creme);max-width:760px;margin-bottom:64px}
+.fecho .h{font-size:150px;line-height:.98}
+.fecho .h .c{display:block;font-size:44px;line-height:1.3;margin-top:24px;letter-spacing:-.01em;word-spacing:0}
+.fecho .aura{left:-200px;top:560px;width:1400px;height:820px}
+</style>
+</head>
+<body>
+<div class="prancha" id="prancha"></div>
+<script>
+const LOGO={escuro:'assets/lockup-peca.svg',claro:'assets/lockup-peca-tinta.svg'};
+
+const EXEMPLOS=[
+ {kicker:'Exemplo 1 · Restaurante', titulo:'Jantar de sexta',
+  fraco:'Venha jantar com a gente. Ambiente aconchegante e pratos deliciosos. Reserve já sua mesa.',
+  ok:'Procurando um lugar tranquilo pra jantar a dois? A [nome] tem menu especial às sextas. Reserve pelo WhatsApp.',
+  forte:['Sabe aquele jantar de sexta em que você passa a noite pedindo pra pessoa repetir o que disse?',
+         'No salão dos fundos a música é baixa e as mesas ficam afastadas, então dá pra conversar sem gritar.',
+         'Menu de 4 tempos a R$ 189 por pessoa, com uma taça de\u00a0vinho.',
+         'Manda o horário no WhatsApp e a gente confirma a mesa na hora.'],
+  porque:['Abre com <b>uma noite que o cliente já viveu</b>',
+          'Detalha o ambiente: <b>música baixa</b>',
+          'Preço e o que vem junto <b>antes do clique</b>',
+          'Depois do clique: <b>mesa confirmada na hora</b>']},
+ {kicker:'Exemplo 2 · Clínica de estética', titulo:'Avaliação de manchas',
+  fraco:'Promoção imperdível. Avaliação gratuita pra você que quer uma pele perfeita. Vagas limitadas, agende já.',
+  ok:'Procurando tratamento pra manchas no rosto? Faça uma avaliação gratuita na [nome] e descubra o que funciona pra sua pele.',
+  forte:['Tem gente que troca de sérum três vezes e a mancha no buço continua no mesmo lugar.',
+         'Na avaliação, a especialista da [nome] examina a pele e diz se a mancha vem de sol, de hormônio ou de espinha que inflamou. Cada uma pede um tratamento diferente.',
+         'São 20 minutos e não custa nada.',
+         'Toca em Enviar mensagem e escolhe o horário.'],
+  porque:['Conta o que ela <b>já tentou</b> sem resolver',
+          'Aponta uma causa que <b>ninguém explicou</b>',
+          'Mostra o que a especialista <b>vai olhar</b>',
+          '“20 minutos” <b>tira a desculpa</b> de não ir']},
+ {kicker:'Exemplo 3 · Loja de roupas', titulo:'Calça de alfaiataria',
+  fraco:'Nova coleção chegou. Peças lindas com preços incríveis. Vem conferir.',
+  ok:'Procurando roupa de trabalho que não amassa? A [nome] tem calças de alfaiataria a partir de R$ 129. Confira.',
+  forte:['Você senta às 8h, levanta às 18h e a calça continua sem vinco no joelho.',
+         'Cintura alta, tecido com elastano e barra pronta pra quem tem de 1,55 a 1,70.',
+         'O vídeo mostra a peça em três clientes, do 36 ao 48.',
+         'Manda seu tamanho no direct e a gente envia a foto no seu número.'],
+  porque:['Começa pelo <b>dia de trabalho dela</b>',
+          'Diz pra quem serve: <b>altura e tamanho</b>',
+          'A peça aparece <b>em corpo real</b>',
+          'O pedido já chega <b>com o tamanho</b>']},
+ {kicker:'Exemplo 4 · Energia solar', titulo:'Simulação pela conta de luz',
+  fraco:'Economize até 95% na conta de luz com energia solar. Financiamento facilitado. Faça seu orçamento grátis.',
+  ok:'Sua conta de luz não para de subir? A [nome] instala energia solar em até 72 vezes. Peça seu orçamento.',
+  forte:['Esse anúncio é pra quem paga mais de R$ 500 de luz e tem telhado próprio.',
+         'Numa conta de R$ 600, 10 placas derrubam a fatura pra perto da taxa mínima. E a parcela sai menor do que você paga hoje.',
+         'Se mora de aluguel, pode passar.',
+         'Manda a foto da sua última fatura e recebe a simulação no mesmo dia.'],
+  porque:['Corta o curioso <b>na primeira linha</b>',
+          'Fala em reais: <b>a conta de R$ 600</b>',
+          'Quem mora de aluguel <b>sai sozinho</b>',
+          'Pede o que só o cliente tem: <b>a fatura</b>']},
+];
+const nb=s=>s.replace(/R\$ /g,"R$ ").replace(/ A \[/g," A [").replace(/^A \[/,"A [").replace(/(\d) (mil|minutos|segundos|kg|perguntas|quartos|placas|vezes|tempos)/g,"$1 $2");
+EXEMPLOS.forEach(e=>{e.fraco=nb(e.fraco);e.ok=nb(e.ok);e.forte=e.forte.map(nb);e.porque=e.porque.map(nb)});
+
+const logo=t=>`<div class="logo"><img src="${LOGO[t]}"></div>`;
+const cab=(rot,mag)=>`<div class="cab"><span class="rot">${rot}</span><div class="regua mag-${mag}"><i></i></div></div>`;
+
+const capa=()=>`<section class="s escuro capa">${logo('escuro')}
+ <div class="corpo">
+  <div class="premissa">Mesma oferta · três textos</div>
+  <div class="nivel fraco"><div class="rot">Anúncio</div><div class="h">Fraco</div><div class="regua mag-fraco"><i></i></div></div>
+  <div class="nivel ok"><div class="rot">Anúncio</div><div class="h">Ok</div><div class="regua mag-ok"><i></i></div></div>
+  <div class="nivel forte"><div class="rot">Anúncio</div><div class="h"><b>Forte</b></div><div class="regua mag-forte"><i></i></div></div>
+ </div>
+ <div class="rot arrasta">Arrasta →</div></section>`;
+
+const exemplo=e=>`<section class="s escuro exemplo">
+ <div class="corpo">
+  <div class="rot">${e.kicker.split(' · ')[0]}</div>
+  <div class="nicho">${e.kicker.split(' · ')[1]}</div>
+  <div class="h titulo">${e.titulo}</div>
+  <div class="linha fraco">${cab('Fraco','fraco')}<div class="moldura-txt"><p>${e.fraco}</p></div></div>
+  <div class="linha ok">${cab('Ok','ok')}<div class="moldura-txt"><p>${e.ok}</p></div></div>
+  <div class="linha forte"><div class="aura"></div><div style="position:relative;z-index:2">${cab('Forte','forte')}<div class="moldura-txt">${e.forte.map(p=>`<p>${p}</p>`).join('')}</div></div></div>
+ </div></section>`;
+
+const porque=e=>`<section class="s claro porque">
+ <div class="corpo">
+  <div class="h">Por que<br><b>funciona?</b></div>
+  ${e.porque.map((p,i)=>`<div class="item"><span class="num">0${i+1}</span><p>${p}</p></div>`).join('')}
+ </div></section>`;
+
+const fecho=()=>`<section class="s escuro fecho"><div class="aura"></div>
+ <div class="corpo">
+  <p class="sub">Juntamos a estrutura dos 4 anúncios fortes<br>num modelo pra você preencher<br>com o seu negócio.</p>
+  <div class="h">Manda<br><b>MODEL</b><span class="c">no direct</span></div>
+ </div></section>`;
+
+const SLIDES=[capa()];
+EXEMPLOS.forEach(e=>{SLIDES.push(exemplo(e));SLIDES.push(porque(e))});
+SLIDES.push(fecho());
+const solo=new URLSearchParams(location.search).get('s'), pr=document.getElementById('prancha');
+if(solo){document.body.classList.add('solo');pr.innerHTML=`<div class="moldura">${SLIDES[solo-1]}</div>`}
+else pr.innerHTML=SLIDES.map((s,i)=>`<div class="moldura">${s}<div class="n">${i+1}</div></div>`).join('');
+</script>
+</body>
+</html>
